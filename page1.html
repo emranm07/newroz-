@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ku">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستەمێ قەردارییا</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #e0e0e0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .tab-button:hover {
+            background-color: #d0d0d0;
+            transform: translateY(-2px);
+        }
+
+        .tab-button.active {
+            background-color: #007bff;
+            color: white;
+            box-shadow: 0 2px 5px rgba(0,123,255,0.3);
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 24px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.2);
+            outline: none;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .filters {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .date-range {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .date-range > div {
+            flex: 1;
+        }
+
+        .summary-box {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .summary-item {
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+            font-size: 16px;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: white;
+            border-radius: 4px;
+        }
+
+        .message {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            font-weight: bold;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .show-message {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .date-range {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .tab-button {
+                min-width: 120px;
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .summary-item {
+                font-size: 14px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-button active" onclick="showTab('tab1', this)">تومارکرنا قەردارییێ</button>
+            <button class="tab-button" onclick="showTab('tab2', this)">لیستا قەردارییان</button>
+            <button class="tab-button" onclick="showTab('tab3', this)">جوداکرنا قەردارییان</button>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div id="tab1" class="tab-content active">
+            <h2>تومارکرنا قەردارییێ</h2>
+            <form id="debtForm" onsubmit="addDebt(event)">
+                <div class="form-group">
+                    <label>ناڤێ قەرداری:</label>
+                    <input type="text" id="debtorName" required>
+                </div>
+                <div class="form-group">
+                    <label>بها:</label>
+                    <input type="number" id="amount" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>تێبینی:</label>
+                    <input type="text" id="notes">
+                </div>
+                <div class="form-group">
+                    <label>بەروار:</label>
+                    <input type="date" id="date" required>
+                </div>
+                <button type="submit">تومارکرن</button>
+            </form>
+        </div>
+
+        <div id="tab2" class="tab-content">
+            <h2>لیستا قەردارییان</h2>
+            <div class="summary-box">
+                <div class="summary-item">
+                    <span>کۆی گشتی:</span>
+                    <span id="totalAmount">0</span>
+                </div>
+                <div class="summary-item">
+                    <span>هژمارا قەرداران:</span>
+                    <span id="totalDebtors">0</span>
+                </div>
+            </div>
+            <table id="debtsTable">
+                <thead>
+                    <tr>
+                        <th>ناڤێ قەرداری</th>
+                        <th>بها</th>
+                        <th>تێبینی</th>
+                        <th>بەروار</th>
+                        <th>کردار</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div id="tab3" class="tab-content">
+            <h2>جوداکرنا قەردارییان</h2>
+            <div class="filters">
+                <div class="form-group">
+                    <label>جوداکرن ل دویڤ بەرواری:</label>
+                    <div class="date-range">
+                        <div>
+                            <label>ژ بەرواری:</label>
+                            <input type="date" id="startDate">
+                        </div>
+                        <div>
+                            <label>هەتا بەرواری:</label>
+                            <input type="date" id="endDate">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>جوداکرن ل دویڤ ناڤی:</label>
+                    <input type="text" id="nameFilter" placeholder="ناڤێ قەرداری بنڤیسە">
+                </div>
+                
+                <button onclick="filterDebts()">جوداکرن</button>
+            </div>
+
+            <div class="summary-box">
+                <div class="summary-item">
+                    <span>کۆی گشتی:</span>
+                    <span id="totalFilteredAmount">0</span>
+                </div>
+                <div class="summary-item">
+                    <span>هژمارا قەرداران:</span>
+                    <span id="totalFilteredDebtors">0</span>
+                </div>
+            </div>
+
+            <table id="filteredDebtsTable">
+                <thead>
+                    <tr>
+                        <th>ناڤێ قەرداری</th>
+                        <th>بها</th>
+                        <th>تێبینی</th>
+                        <th>بەروار</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        let debts = [];
+        
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDebts();
+            setDefaultDate();
+        });
+
+        function setDefaultDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+        }
+
+        function loadDebts() {
+            try {
+                const savedDebts = localStorage.getItem('debts');
+                debts = savedDebts ? JSON.parse(savedDebts) : [];
+                updateDebtsList();
+            } catch (error) {
+                showMessage('کێشەیەک هەبوو د بارکرنا زانیاریان دا', 'error');
+                debts = [];
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = message;
+            messageDiv.className = `message ${type}-message show-message`;
+            setTimeout(() => {
+                messageDiv.className = `message ${type}-message`;
+            }, 3000);
+        }
+
+        function showTab(tabId, button) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            button.classList.add('active');
+            
+            if(tabId === 'tab2') {
+                updateDebtsList();
+            }
+        }
+
+        function addDebt(event) {
+            event.preventDefault();
+            try {
+                const name = document.getElementById('debtorName').value.trim();
+                const amount = parseFloat(document.getElementById('amount').value);
+                const notes = document.getElementById('notes').value.trim();
+                const date = document.getElementById('date').value;
+
+                if(!name) {
+                    showMessage('تکایە ناڤێ قەرداری بنڤیسە', 'error');
+                    return;
+                }
+                if(isNaN(amount) || amount <= 0) {
+                    showMessage('تکایە بهایەکێ دروست بنڤیسە', 'error');
+                    return;
+                }
+                if(!date) {
+                    showMessage('تکایە بەروارێ دیاربکە', 'error');
+                    return;
+                }
+
+                const debt = {
+                    id: Date.now(),
+                    name,
+                    amount,
+                    notes,
+                    date
+                };
+
+                debts.push(debt);
+                saveDebts();
+
+                // Clear form
+                document.getElementById('debtForm').reset();
+                setDefaultDate();
+
+                showMessage('قەرداری ب سەرکەفتیانە هاتە تومارکرن', 'success');
+                updateDebtsList();
+            } catch (error) {
+                showMessage('هەڵەیەک رویدا. تکایە دووبارە هەوڵ بدە', 'error');
+            }
+        }
+
+        function saveDebts() {
+            try {
+                localStorage.setItem('debts', JSON.stringify(debts));
+            } catch (error) {
+                showMessage('کێشەیەک هەبوو د پاراستنا زانیاریان دا', 'error');
+            }
+        }
+
+        function deleteDebt(id) {
+            if(confirm('تۆ دڵنیای دخوازی ڤێ قەردارییێ بسڕی؟')) {
+                debts = debts.filter(debt => debt.id !== id);
+                saveDebts();
+                updateDebtsList();
+                showMessage('قەرداری ب سەرکەفتیانە هاتە سڕینەوە', 'success');
+            }
+        }
+
+        function updateDebtsList() {
+            try {
+                const tbody = document.querySelector('#debtsTable tbody');
+                tbody.innerHTML = '';
+
+                let totalAmount = 0;
+                const uniqueDebtors = new Set();
+
+                if(debts.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">هیچ قەردارییەک نینە</td></tr>';
+                } else {
+                    debts.forEach(debt => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${escapeHtml(debt.name)}</td>
+                            <td>${Number(debt.amount).toFixed(2)}</td>
+                            <td>${escapeHtml(debt.notes || '-')}</td>
+                            <td>${debt.date}</td>
+                            <td>
+                                <button class="delete-btn" onclick="deleteDebt(${debt.id})">سڕینەوە</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                        
+                        totalAmount += Number(debt.amount);
+                        uniqueDebtors.add(debt.name);
+                    });
+                }
+
+                document.getElementById('totalAmount').textContent = totalAmount.toFixed(2);
+                document.getElementById('totalDebtors').textContent = uniqueDebtors.size;
+            } catch (error) {
+                showMessage('کێشەیەک هەبوو د نوێکرنا لیستێ دا', 'error');
+            }
+        }
+
+        function filterDebts() {
+            try {
+                const startDate = document.getElementById('startDate').value;
+                const endDate = document.getElementById('endDate').value;
+                const nameFilter = document.getElementById('nameFilter').value.trim().toLowerCase();
+                
+                let filteredDebts = [...debts];
+                
+                if (startDate && endDate) {
+                    filteredDebts = filteredDebts.filter(debt => {
+                        const debtDate = new Date(debt.date);
+                        const start = new Date(startDate);
+                        const end = new Date(endDate);
+                        return debtDate >= start && debtDate <= end;
+                    });
+                }
+                
+                if (nameFilter) {
+                    filteredDebts = filteredDebts.filter(debt => 
+                        debt.name.toLowerCase().includes(nameFilter)
+                    );
+                }
+                
+                const tbody = document.querySelector('#filteredDebtsTable tbody');
+                tbody.innerHTML = '';
+                
+                let totalAmount = 0;
+                const uniqueDebtors = new Set();
+
+                if(filteredDebts.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">هیچ ئەنجامەک نەهاتە دیتن</td></tr>';
+                } else {
+                    filteredDebts.forEach(debt => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${escapeHtml(debt.name)}</td>
+                            <td>${Number(debt.amount).toFixed(2)}</td>
+                            <td>${escapeHtml(debt.notes || '-')}</td>
+                            <td>${debt.date}</td>
+                        `;
+                        tbody.appendChild(tr);
+                        
+                        totalAmount += Number(debt.amount);
+                        uniqueDebtors.add(debt.name);
+                    });
+                }
+                
+                document.getElementById('totalFilteredAmount').textContent = totalAmount.toFixed(2);
+                document.getElementById('totalFilteredDebtors').textContent = uniqueDebtors.size;
+
+            } catch (error) {
+                showMessage('هەڵەیەک رویدا د جوداکرنێ دا', 'error');
+            }
+        }
+
+        function escapeHtml(unsafe) {
+            return unsafe ? unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;") : '';
+        }
+    </script>
+</body>
+</html>

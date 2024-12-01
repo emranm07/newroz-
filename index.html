@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستەمی چوونەژوورەوە</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+        .login-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error {
+            color: red;
+            display: none;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2 style="text-align: center;">چوونەژوورەوە</h2>
+        <input type="text" id="username" placeholder="ناوی بەکارهێنەر">
+        <input type="password" id="code" placeholder="کۆدی چوونەژوورەوە">
+        <button onclick="checkCode()">چوونەژوورەوە</button>
+        <p id="error" class="error">کۆدەکە هەڵەیە!</p>
+    </div>
+
+    <script>
+        const validCodes = {
+            'emran07': '83wuoqfiedhsvvvvvvvvvvvvvvvvvvvvvvvvvvclnaaaaasdkjjjjjgfvbuyiwoejlmasdkjjjjfvbhiywqeoooooooooooooooooooooooooooooooooooooooofvnhjnxcbewuie8755555554309nxymzx    efuotppppppppppppppwyniw5vtny   n89y44444444444444423nu   7yvvvvvvvvvvvvvvvco78tuyiuodffffffffui987654567894uirjhfhkm@#@#@3lfjkkkkg uk',
+            'user2': '5678',
+            'user3': '9012'
+        };
+
+        function checkCode() {
+            const username = document.getElementById('username').value;
+            const code = document.getElementById('code').value;
+            const error = document.getElementById('error');
+
+            if (validCodes[username] === code) {
+                error.style.display = 'none';
+                // ڕەوانەکردن بۆ لاپەڕەیەکی تر
+                switch(username) {
+                    case 'emran07':
+                        window.location.href = 'page1.html';
+                        break;
+                    case 'user2':
+                        window.location.href = 'page2.html';
+                        break;
+                    case 'user3':
+                        window.location.href = 'page3.html';
+                        break;
+                    default:
+                        window.location.href = 'default.html';
+                }
+            } else {
+                error.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>        
